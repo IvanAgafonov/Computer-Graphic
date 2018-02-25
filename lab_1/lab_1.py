@@ -6,24 +6,18 @@ from random import random
 import time
 
 def update_mass():
+    children = tabl_1.get_children()
+    for i in range(len(children)):
+        tabl_1.delete(children[i])
 
-    text_1 = '           x1       y1\n'
-    for i in mas_1:
-        text_1 += '{:10d} {:10d}\n'.format(i[0], i[1])
-    data_1['text'] = text_1
+    children = tabl_2.get_children()
+    for i in range(len(children)):
+        tabl_2.delete(children[i])
 
-
-    text_2 = '          x2       y2\n'
-    for i in mas_2:
-        text_2 += '{:10d} {:10d}\n'.format(i[0], i[1])
-    data_2['text'] = text_2
-
-
-
-    text_number = ''
-    for i in range(max(len(mas_1),len(mas_2))):
-        text_number += str(i+1) + "\n"
-    data_number['text'] = text_number
+    for i in range(len(mas_1)):
+        tabl_1.insert("", i, text=i+1, values=(mas_1[i][0], mas_1[i][1]))
+    for i in range(len(mas_2)):
+        tabl_2.insert("", i, text=i+1, values=(mas_2[i][0], mas_2[i][1]))
 
 def click_btn_add():
     line = message_entr_add.get().split(",")
@@ -51,6 +45,9 @@ def click_btn_del():
     if len(line) != 2:
         print("Error Input. Need 2 argument (number_point, number_mas)")
         messagebox.showerror("Error", "Error Input. Need 2 argument (number_point, number_mas)")
+    elif int(line[0])<=0:
+        print("1<=number_point<=len(mas)")
+        messagebox.showerror("Error", "1<=number_point<=len(mas)")
     else:
         try:
             if int(line[1]) == 1:
@@ -61,8 +58,8 @@ def click_btn_del():
                 print("Error Input. number_mas must be 1 or 2")
                 messagebox.showerror("Error", "Error Input. number_mas must be 1 or 2")
         except:
-            messagebox.showerror("Error", "Error input. number_point(N) must me integer and 1<N<len(mas)")
-            print("Error input. number_point(N) must me integer and 1<N<len(mas)")
+            messagebox.showerror("Error", "Error input. number_point(N) must me integer and 1<=N<=len(mas)")
+            print("Error input. number_point(N) must me integer and 1<=N<=len(mas)")
 
         update_mass()
 
@@ -93,7 +90,10 @@ def click_btn_run():
     #     for
     #     for
     # for i in range
-    pass
+    tabl_1.delete()
+
+    #time.sleep(5)
+
 
 
 def click_btn_add_from_file():
@@ -120,8 +120,8 @@ def click_btn_add_from_file():
 
 
 # Массивы точек
-mas_1 = [[10,23],[43,21],[53,25]]
-mas_2 = [[45,21]]
+mas_1 = [[10,23],[43,21],[53,25],[32,52],[1000,2452],[124,45],[241,242],[3,4],[4214,42],[412,1],[144,24]]
+mas_2 = [[10,23],[43,21],[53,25],[32,52],[1000,2452],[124,45],[241,242],[3,4],[4214,42],[412,1],[144,24]]
 
 # Основная сцена
 root=Tk()
@@ -164,53 +164,79 @@ entr_del.grid(row=2, column=1, padx=padx, pady=pady)
 entr_red.grid(row=3, column=1, padx=padx, pady=pady)
 entr_run.grid(row=0, column=1, padx=padx, pady=pady)
 
-# Таблицы точек
-text_1 = '           x1       y1\n'
-for i in mas_1:
-    text_1 += '{0:10} {0:10}\n'.format(i[0],i[1])
-data_1 = Label(text=text_1)
-data_1.place(x = 10, y = 250)
+# # Таблицы точек
+# text_1 = '           x1       y1\n'
+# for i in mas_1:
+#     text_1 += '{0:10} {0:10}\n'.format(i[0],i[1])
+# data_1 = Label(text=text_1)
+# data_1.place(x = 10, y = 250)
+#
+# text_2 = '          x2       y2\n'
+# for i in mas_2:
+#     text_2 += '{0:10d}{0:10d}'.format(i[0],i[1]) + "\n"
+# data_2 = Label(text=text_2)
+# data_2.place(x = 100, y = 250)
+#
+# text_number = ''
+# for i in range(max(len(mas_1),len(mas_2))):
+#     text_number += str(i+1) + "\n"
+# data_number = Label(text=text_number)
+# data_number.place(x = 0, y = 265)
+#
+# Таблица точек 1-ого массива
+width_column = 70
 
-text_2 = '          x2       y2\n'
-for i in mas_2:
-    text_2 += '{0:10d}{0:10d}'.format(i[0],i[1]) + "\n"
-data_2 = Label(text=text_2)
-data_2.place(x = 100, y = 250)
+tabl_1 = tkk.Treeview(root, height=20)
+tabl_1["columns"] = ("x_1", "y_1")
 
-text_number = ''
-for i in range(max(len(mas_1),len(mas_2))):
-    text_number += str(i+1) + "\n"
-data_number = Label(text=text_number)
-data_number.place(x = 0, y = 265)
+tabl_1.column("#0", width=width_column-30)
+tabl_1.column("x_1", width=width_column)
+tabl_1.column("y_1", width=width_column)
 
-# Таблицы точек
-lb_header = ['x_1', 'y_1','x_2','y_2']
-tabl = tkk.Treeview(root)
-tabl_1 = tkk.Treeview(root)
-tabl["columns"] = ("x_1","y_1","x_2","y_2")
+tabl_1.heading("x_1", text="x_1")
+tabl_1.heading("y_1", text="y_1")
 
-width_column = 100
+tabl_1.place(x = 10, y = 300)
 
-tabl.column("#0",  width=width_column)
-tabl.column("x_1", width=width_column)
-tabl.column("y_1", width=width_column)
-tabl.column("x_2", width=width_column)
-tabl.column("y_2", width=width_column)
+# Скролбар для 1-ой таблицы
+vsb_1 = Scrollbar(root, orient="vertical", command=tabl_1.yview)
+vsb_1.place(x=10, y=300, height=428)
 
+tabl_1.configure(yscrollcommand=vsb_1.set)
 
+# Таблица точек 2-ого массива
+tabl_2 = tkk.Treeview(root, height=20)
+tabl_2["columns"] = ("x_2", "y_2")
 
+tabl_2.column("#0", width=width_column-30)
+tabl_2.column("x_2", width=width_column)
+tabl_2.column("y_2", width=width_column)
 
-tabl.heading("x_1", text="x_1")
-tabl.heading("y_1", text="y_1")
-tabl.heading("x_2", text="x_2")
-tabl.heading("y_2", text="y_2")
+tabl_2.heading("x_2", text="x_2")
+tabl_2.heading("y_2", text="y_2")
 
+tabl_2.place(x = 190, y = 300)
+
+# Скролбар для 2-ой таблицы
+vsb_2 = Scrollbar(root, orient="vertical", command=tabl_2.yview)
+vsb_2.place(x=190, y=300, height=428)
+
+tabl_2.configure(yscrollcommand=vsb_2.set)
+
+# Первичное заполнение таблиц
 for i in range(len(mas_1)):
-    tabl.insert("", i, text=i, values=(mas_1[i][0],mas_1[i][1]))
+    tabl_1.insert("", i, text=i+1, values=(mas_1[i][0], mas_1[i][1]))
+for i in range(len(mas_2)):
+    tabl_2.insert("", i, text=i+1, values=(mas_2[i][0], mas_2[i][1]))
 
 
-tabl.place(x = 10, y = 250)
+
+# Размещение таблиц
+
+
     
+
+
 
 #canv = Canvas(width = 800, height = 600, bg = "black", cursor = "pencil")
 #canv.place(x = 450, y = 44)
