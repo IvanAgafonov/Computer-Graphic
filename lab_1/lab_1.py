@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import tkinter.ttk as tkk
 from random import random
+import math
 
 import time
 
@@ -85,18 +86,164 @@ def click_btn_red():
 
 def click_btn_run():
 
-    # for i in range(len(mas_1)):
-    #     print(1)
-    #     for
-    #     for
-    # for i in range
-    tabl_1.delete()
+    mas_okr_1 = get_mas_okr(mas_1)
+    mas_okr_2 = get_mas_okr(mas_2)
 
-    #time.sleep(5)
+    mas_okr = mas_okr_1 + mas_okr_2
+
+    for i in mas_okr:
+        print(i)
+
+    print("------")
+
+    mas_points_centr = get_mas_points_centr(mas_okr)
+
+    for i in mas_points_centr:
+        print(i)
+    print("------")
+
+    mas_angle = get_mas_angle(mas_points_centr)
+    for i in mas_angle:
+        print(i)
+    print("------")
+
+    min_angle_i = -1
+    min_angle_g = -1
+    min_angle = mas_angle[0][2]
+
+    for k in range(len(mas_angle)):
+
+        i = mas_angle[k][0]
+        g = mas_angle[k][1]
+        angle = mas_angle[k][2]
+
+        if angle < min_angle:
+            min_angle_i = i
+            min_angle_g = g
+            min_angle = angle
 
 
+    print(min_angle)
+
+    scale = 3
+
+    print(len(mas_okr_1))
+    print(len(mas_okr_2))
+    print(len(mas_points_centr))
+    print(len(mas_angle))
+    canv.create_oval((mas_points_centr[min_angle_i][0][0] - mas_points_centr[min_angle_i][1]) * scale + 10, (mas_points_centr[min_angle_i][0][1] + mas_points_centr[min_angle_i][1]) * scale + 10,
+                    (mas_points_centr[min_angle_i][0][0] + mas_points_centr[min_angle_i][1]) * scale + 10, (mas_points_centr[min_angle_i][0][1] - mas_points_centr[min_angle_i][1]) * scale + 10, fill='#FFF0F5')
+    canv.create_oval((mas_points_centr[min_angle_g][0][0] - mas_points_centr[min_angle_g][1]) * scale + 10, (mas_points_centr[min_angle_g][0][1] + mas_points_centr[min_angle_g][1]) * scale + 10,
+                    (mas_points_centr[min_angle_g][0][0] + mas_points_centr[min_angle_g][1]) * scale + 10, (mas_points_centr[min_angle_g][0][1] - mas_points_centr[min_angle_g][1]) * scale + 10, fill='#E6E6FA')
+
+
+
+def get_mas_angle(mas):
+
+    mas_angle = []
+
+    for i in range(len(mas)-1):
+        for g in range(i+1,len(mas)):
+
+            x1 = mas[i][0][0]
+            y1 = mas[i][0][1]
+
+            x2 = mas[g][0][0]
+            y2 = mas[g][0][1]
+
+            # A*X+B*Y+C=0
+
+            A1 = y1-y2
+            B1 = x2-x1
+            C1 = (x1-x2)*y1 + (y2-y1)*x1
+
+            A2 = 0
+            B2 = 1
+            C2 = 0
+
+            try:
+                angle = math.fabs(math.atan((A1*B2 - A2*B1)/(A1*A2 - B1*B2)))
+            except:
+                angle = 0
+
+            mas_angle.append([i,g,angle])
+
+    return mas_angle
+
+
+
+
+
+
+def get_mas_points_centr(mas):
+
+    mas_points_centr = []
+
+    for i in range(len(mas)):
+        x1 = mas[i][0]
+        y1 = mas[i][1]
+
+        x2 = mas[i][2]
+        y2 = mas[i][3]
+
+        x3 = mas[i][4]
+        y3 = mas[i][5]
+
+        # A*Xo+B*Yo=C
+        # D*Xo+E*Yo=F
+
+        A = 2*(x2-x1)
+        B = 2*(y2-y1)
+        C = x2**2 - x1**2 + y2**2 - y1**2
+        D = 2*(x3-x2)
+        E = 2*(y3-y2)
+        F = x3**2 - x2**2 + y3**2 - y2**2
+
+        # (X1-Xo)^2 + (Y1-Yo)^2 = R^2
+        # (X2-Xo)^2 + (Y2-Yo)^2 = R^2
+        # (X3-Xo)^2 + (Y3-Yo)^2 = R^2
+
+        x0 = (C*E - B*F)/(A*E - D*B)
+        y0 = (A*F - D*C)/(A*E - D*B)
+
+        rad = distance_between_points([x0,y0],[x1,y1])
+
+        mas_points_centr.append([[x0,y0], rad])
+
+    return mas_points_centr
+
+def distance_between_points(xy1, xy2):
+    x_1 = xy1[0]
+    x_2 = xy2[0]
+    y_1 = xy1[1]
+    y_2 = xy2[1]
+    dis = math.sqrt((x_2 - x_1) ** 2 + (y_2 - y_1) ** 2)
+    return dis
+
+
+def get_mas_okr(mas):
+
+    mas_okr = []
+
+    for i in range(len(mas)-2):
+        for g in range(i+1, len(mas)-1):
+            for k in range(g+1, len(mas)):
+                x1 = mas[i][0]
+                y1 = mas[i][1]
+
+                x2 = mas[g][0]
+                y2 = mas[g][1]
+
+                x3 = mas[k][0]
+                y3 = mas[k][1]
+
+                if (y2-y1) * (x3-x1) != (y3-y1) * (x2-x1):
+                    mas_okr.append([x1,y1,x2,y2,x3,y3])
+
+    return mas_okr
 
 def click_btn_add_from_file():
+
     line = message_entr_run.get()
     try:
         f = open(line,"r")
@@ -120,8 +267,8 @@ def click_btn_add_from_file():
 
 
 # Массивы точек
-mas_1 = [[10,23],[43,21],[53,25],[32,52],[1000,2452],[124,45],[241,242],[3,4],[4214,42],[412,1],[144,24]]
-mas_2 = [[10,23],[43,21],[53,25],[32,52],[1000,2452],[124,45],[241,242],[3,4],[4214,42],[412,1],[144,24]]
+mas_1 = [[1,1], [3,1], [2,2], [6,6]]
+mas_2 = [[1,1], [3,1], [2,2], [6,6]]
 
 # Основная сцена
 root=Tk()
@@ -164,25 +311,6 @@ entr_del.grid(row=2, column=1, padx=padx, pady=pady)
 entr_red.grid(row=3, column=1, padx=padx, pady=pady)
 entr_run.grid(row=0, column=1, padx=padx, pady=pady)
 
-# # Таблицы точек
-# text_1 = '           x1       y1\n'
-# for i in mas_1:
-#     text_1 += '{0:10} {0:10}\n'.format(i[0],i[1])
-# data_1 = Label(text=text_1)
-# data_1.place(x = 10, y = 250)
-#
-# text_2 = '          x2       y2\n'
-# for i in mas_2:
-#     text_2 += '{0:10d}{0:10d}'.format(i[0],i[1]) + "\n"
-# data_2 = Label(text=text_2)
-# data_2.place(x = 100, y = 250)
-#
-# text_number = ''
-# for i in range(max(len(mas_1),len(mas_2))):
-#     text_number += str(i+1) + "\n"
-# data_number = Label(text=text_number)
-# data_number.place(x = 0, y = 265)
-#
 # Таблица точек 1-ого массива
 width_column = 70
 
@@ -231,15 +359,14 @@ for i in range(len(mas_2)):
 
 
 
-# Размещение таблиц
 
 
     
 
 
 
-#canv = Canvas(width = 800, height = 600, bg = "black", cursor = "pencil")
-#canv.place(x = 450, y = 44)
+canv = Canvas(width = 800, height = 600, bg = "black", cursor = "pencil")
+canv.place(x = 450, y = 44)
 
 
 #https://docs.python.org/3/library/tkinter.ttk.html#treeview
