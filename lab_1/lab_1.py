@@ -91,6 +91,10 @@ def click_btn_run():
 
     mas_okr = mas_okr_1 + mas_okr_2
 
+    if len(mas_okr) <= 1:
+        messagebox.showerror("Error", "Error Input. At these points, zero or one circle can be constructed.")
+        return
+
     for i in mas_okr:
         print(i)
 
@@ -103,12 +107,13 @@ def click_btn_run():
     print("------")
 
     mas_angle = get_mas_angle(mas_points_centr)
+
     for i in mas_angle:
         print(i)
     print("------")
 
-    min_angle_i = -1
-    min_angle_g = -1
+    min_angle_i = mas_angle[0][0]
+    min_angle_g = mas_angle[0][1]
     min_angle = mas_angle[0][2]
 
     for k in range(len(mas_angle)):
@@ -124,19 +129,68 @@ def click_btn_run():
 
 
     print(min_angle)
+    print(min_angle_g)
+    print(min_angle_i)
 
-    scale = 3
+    scale = 1
+
+    x0_i = mas_points_centr[min_angle_i][0][0]
+    y0_i = window_y - mas_points_centr[min_angle_i][0][1]
+    r_i = mas_points_centr[min_angle_i][1]
+
+    x0_g = mas_points_centr[min_angle_g][0][0]
+    y0_g = window_y - mas_points_centr[min_angle_g][0][1]
+    r_g = mas_points_centr[min_angle_g][1]
 
     print(len(mas_okr_1))
     print(len(mas_okr_2))
     print(len(mas_points_centr))
     print(len(mas_angle))
-    canv.create_oval((mas_points_centr[min_angle_i][0][0] - mas_points_centr[min_angle_i][1]) * scale + 10, (mas_points_centr[min_angle_i][0][1] + mas_points_centr[min_angle_i][1]) * scale + 10,
-                    (mas_points_centr[min_angle_i][0][0] + mas_points_centr[min_angle_i][1]) * scale + 10, (mas_points_centr[min_angle_i][0][1] - mas_points_centr[min_angle_i][1]) * scale + 10, fill='#FFF0F5')
-    canv.create_oval((mas_points_centr[min_angle_g][0][0] - mas_points_centr[min_angle_g][1]) * scale + 10, (mas_points_centr[min_angle_g][0][1] + mas_points_centr[min_angle_g][1]) * scale + 10,
-                    (mas_points_centr[min_angle_g][0][0] + mas_points_centr[min_angle_g][1]) * scale + 10, (mas_points_centr[min_angle_g][0][1] - mas_points_centr[min_angle_g][1]) * scale + 10, fill='#E6E6FA')
+
+    print(y0_i)
+    print(y0_g)
+
+    if r_i > r_g:
+        canv.create_oval((x0_i - r_i) * scale, (y0_i + r_i) * scale,
+                         (x0_i + r_i) * scale, (y0_i - r_i) * scale,
+                         fill='#FFF0F5')
+        canv.create_oval((x0_g - r_g) * scale, (y0_g + r_g) * scale,
+                         (x0_g + r_g) * scale, (y0_g - r_g) * scale,
+                         fill='#E6E6FA')
+
+    else:
+        canv.create_oval((x0_g - r_g) * scale, (y0_g + r_g) * scale,
+                         (x0_g + r_g) * scale, (y0_g - r_g) * scale,
+                         fill='#E6E6FA')
+        canv.create_oval((x0_i - r_i) * scale, (y0_i + r_i) * scale,
+                         (x0_i + r_i) * scale, (y0_i - r_i) * scale,
+                         fill='#FFF0F5')
+
+    canv.create_line(x0_i * scale, y0_i * scale, x0_g * scale, y0_g * scale, fill='#FF0000')
+
+    if y0_i >= y0_g:
+        canv.create_line(0, y0_i * scale, window_x, y0_i * scale, fill='#FFFF00')
+    else:
+        canv.create_line(0, y0_g * scale, window_x, y0_g * scale, fill='#FFFF00')
+
+    offset = 2
+
+    canv.create_oval(x0_i - offset, y0_i - offset, x0_i + offset, y0_i + offset, fill="#00FF7F")
+    canv.create_oval(x0_g - offset, y0_g - offset, x0_g + offset, y0_g + offset, fill="#00FF7F")
 
 
+
+    # Перевод из радиан в градусы
+    min_angle = min_angle * 180/math.pi
+    print(min_angle)
+
+    tx.delete('1.0', END)
+    tx.insert(1.0, "Окружности найдены. \n"
+                   "Окружность 1: ее радиус {0:.2f}, координаты центра ({1:.2f}, {2:.2f}) \n"
+                   "Окружность 2: ее радиус {3:.2f}, координаты центра ({4:.2f}, {5:.2f}) \n"
+                   "Угол с осью абцис {6:.2f}".format(r_i, x0_i, y0_i,
+                                                                  r_g, x0_g, y0_g,
+                                                                  min_angle))
 
 def get_mas_angle(mas):
 
@@ -169,11 +223,6 @@ def get_mas_angle(mas):
             mas_angle.append([i,g,angle])
 
     return mas_angle
-
-
-
-
-
 
 def get_mas_points_centr(mas):
 
@@ -267,8 +316,8 @@ def click_btn_add_from_file():
 
 
 # Массивы точек
-mas_1 = [[1,1], [3,1], [2,2], [6,6]]
-mas_2 = [[1,1], [3,1], [2,2], [6,6]]
+mas_1 = [[100,100], [28,100], [50,20]]
+mas_2 = [[120,55], [160,84], [190,41]]
 
 # Основная сцена
 root=Tk()
@@ -357,15 +406,16 @@ for i in range(len(mas_1)):
 for i in range(len(mas_2)):
     tabl_2.insert("", i, text=i+1, values=(mas_2[i][0], mas_2[i][1]))
 
-
-
-
+# Текст для результата
+tx = Text(root, width=100, height=4, font='Times 12')
+tx.place(x = 450, y = 644)
 
     
+window_x = 800
+window_y = 600
 
 
-
-canv = Canvas(width = 800, height = 600, bg = "black", cursor = "pencil")
+canv = Canvas(width = window_x, height = window_y, bg = "black", cursor = "pencil")
 canv.place(x = 450, y = 44)
 
 
