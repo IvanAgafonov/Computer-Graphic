@@ -132,15 +132,50 @@ def click_btn_run():
     print(min_angle_g)
     print(min_angle_i)
 
-    scale = 1
 
+    # Определение точек найденных окружжностей
     x0_i = mas_points_centr[min_angle_i][0][0]
-    y0_i = window_y - mas_points_centr[min_angle_i][0][1]
+    y0_i = mas_points_centr[min_angle_i][0][1]
     r_i = mas_points_centr[min_angle_i][1]
 
     x0_g = mas_points_centr[min_angle_g][0][0]
-    y0_g = window_y - mas_points_centr[min_angle_g][0][1]
+    y0_g = mas_points_centr[min_angle_g][0][1]
     r_g = mas_points_centr[min_angle_g][1]
+
+    print(x0_i,y0_i,r_i,x0_g,y0_g,r_g)
+
+
+    # Расчет коэфа масштабирования
+    KXmax = window_x
+    KYmax = window_y
+
+    KXmin = 0
+    KYmin = 0
+
+    if x0_i + r_i >= x0_g + r_g:
+        Xmax = x0_i + r_i
+        Xmin = x0_g - r_g
+    else:
+        Xmax = x0_g + r_g
+        Xmin = x0_i - r_i
+
+    if y0_i + r_i <= y0_g + r_g:
+        Ymax = y0_i + r_i
+        Ymin = y0_g - r_g
+    else:
+        Ymax = y0_g + r_g
+        Ymin = y0_i - r_i
+
+    Kx = (KXmax - KXmin)/(Xmax - Xmin)
+    Ky = (KYmax - KYmin)/(Ymax - Ymin)
+
+    scale = min(Kx,Ky)
+    print(Xmax)
+    print(Xmin)
+    print(Ymax)
+    print(Ymin)
+    print(Kx,Ky)
+    print("sds",scale)
 
     print(len(mas_okr_1))
     print(len(mas_okr_2))
@@ -151,19 +186,19 @@ def click_btn_run():
     print(y0_g)
 
     if r_i > r_g:
-        canv.create_oval((x0_i - r_i) * scale, (y0_i + r_i) * scale,
-                         (x0_i + r_i) * scale, (y0_i - r_i) * scale,
+        canv.create_oval((x0_i - r_i - Xmin + 0.5) * scale, ((y0_i + r_i) * scale),
+                         (x0_i + r_i - Xmin + 0.5) * scale, ((y0_i - r_i) * scale),
                          fill='#FFF0F5')
-        canv.create_oval((x0_g - r_g) * scale, (y0_g + r_g) * scale,
-                         (x0_g + r_g) * scale, (y0_g - r_g) * scale,
+        canv.create_oval((x0_g - r_g - Xmin + 0.5) * scale, ((y0_g + r_g) * scale),
+                         (x0_g + r_g - Xmin + 0.5) * scale, ((y0_g - r_g) * scale),
                          fill='#E6E6FA')
 
     else:
-        canv.create_oval((x0_g - r_g) * scale, (y0_g + r_g) * scale,
-                         (x0_g + r_g) * scale, (y0_g - r_g) * scale,
+        canv.create_oval((x0_g - r_g - Xmin + 0.5) * scale, ((y0_g + r_g) * scale),
+                         (x0_g + r_g - Xmin + 0.5) * scale, ((y0_g - r_g) * scale),
                          fill='#E6E6FA')
-        canv.create_oval((x0_i - r_i) * scale, (y0_i + r_i) * scale,
-                         (x0_i + r_i) * scale, (y0_i - r_i) * scale,
+        canv.create_oval((x0_i - r_i - Xmin + 0.5) * scale, ((y0_i + r_i) * scale),
+                         (x0_i + r_i - Xmin + 0.5) * scale, ((y0_i - r_i) * scale),
                          fill='#FFF0F5')
 
     canv.create_line(x0_i * scale, y0_i * scale, x0_g * scale, y0_g * scale, fill='#FF0000')
@@ -175,8 +210,8 @@ def click_btn_run():
 
     offset = 2
 
-    canv.create_oval(x0_i - offset, y0_i - offset, x0_i + offset, y0_i + offset, fill="#00FF7F")
-    canv.create_oval(x0_g - offset, y0_g - offset, x0_g + offset, y0_g + offset, fill="#00FF7F")
+    canv.create_oval(x0_i * scale - offset, y0_i * scale - offset, x0_i * scale + offset, y0_i * scale + offset, fill="#00FF7F")
+    canv.create_oval(x0_g * scale - offset, y0_g * scale - offset, x0_g * scale + offset, y0_g * scale + offset, fill="#00FF7F")
 
 
 
