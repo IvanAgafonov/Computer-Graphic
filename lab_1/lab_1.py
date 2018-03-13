@@ -146,24 +146,32 @@ def click_btn_run():
 
 
     # Расчет коэфа масштабирования
-    KXmax = window_x
-    KYmax = window_y
+    KXmax = window_x - 4
+    KYmax = window_y - 4
 
     KXmin = 0
     KYmin = 0
 
     if x0_i + r_i >= x0_g + r_g:
         Xmax = x0_i + r_i
-        Xmin = x0_g - r_g
+
     else:
         Xmax = x0_g + r_g
+
+    if x0_i - r_i >= x0_g - r_g:
+        Xmin = x0_g - r_g
+    else:
         Xmin = x0_i - r_i
 
-    if y0_i + r_i <= y0_g + r_g:
+    if y0_i + r_i >= y0_g + r_g:
         Ymax = y0_i + r_i
-        Ymin = y0_g - r_g
+
     else:
         Ymax = y0_g + r_g
+
+    if y0_i - r_i >= y0_g - r_g:
+        Ymin = y0_g - r_g
+    else:
         Ymin = y0_i - r_i
 
     Kx = (KXmax - KXmin)/(Xmax - Xmin)
@@ -185,33 +193,37 @@ def click_btn_run():
     print(y0_i)
     print(y0_g)
 
+    canv.delete('all')
+
     if r_i > r_g:
-        canv.create_oval((x0_i - r_i - Xmin + 0.5) * scale, ((y0_i + r_i) * scale),
-                         (x0_i + r_i - Xmin + 0.5) * scale, ((y0_i - r_i) * scale),
+        canv.create_oval((x0_i - r_i - Xmin + 0.5) * scale, ((y0_i + r_i - Ymin + 0.5) * scale),
+                         (x0_i + r_i - Xmin + 0.5) * scale, ((y0_i - r_i - Ymin + 0.5) * scale),
                          fill='#FFF0F5')
-        canv.create_oval((x0_g - r_g - Xmin + 0.5) * scale, ((y0_g + r_g) * scale),
-                         (x0_g + r_g - Xmin + 0.5) * scale, ((y0_g - r_g) * scale),
+        canv.create_oval((x0_g - r_g - Xmin + 0.5) * scale, ((y0_g + r_g - Ymin + 0.5) * scale),
+                         (x0_g + r_g - Xmin + 0.5) * scale, ((y0_g - r_g - Ymin + 0.5) * scale),
                          fill='#E6E6FA')
 
     else:
-        canv.create_oval((x0_g - r_g - Xmin + 0.5) * scale, ((y0_g + r_g) * scale),
-                         (x0_g + r_g - Xmin + 0.5) * scale, ((y0_g - r_g) * scale),
+        canv.create_oval((x0_g - r_g - Xmin + 0.5) * scale, ((y0_g + r_g - Ymin + 0.5) * scale),
+                         (x0_g + r_g - Xmin + 0.5) * scale, ((y0_g - r_g - Ymin + 0.5) * scale),
                          fill='#E6E6FA')
-        canv.create_oval((x0_i - r_i - Xmin + 0.5) * scale, ((y0_i + r_i) * scale),
-                         (x0_i + r_i - Xmin + 0.5) * scale, ((y0_i - r_i) * scale),
+        canv.create_oval((x0_i - r_i - Xmin + 0.5) * scale, ((y0_i + r_i - Ymin + 0.5) * scale),
+                         (x0_i + r_i - Xmin + 0.5) * scale, ((y0_i - r_i - Ymin + 0.5) * scale),
                          fill='#FFF0F5')
 
-    canv.create_line(x0_i * scale, y0_i * scale, x0_g * scale, y0_g * scale, fill='#FF0000')
+
 
     if y0_i >= y0_g:
-        canv.create_line(0, y0_i * scale, window_x, y0_i * scale, fill='#FFFF00')
+        canv.create_line(0, (y0_i - Ymin + 0.5) * scale, window_x, (y0_i - Ymin + 0.5) * scale, fill='#006400')
     else:
-        canv.create_line(0, y0_g * scale, window_x, y0_g * scale, fill='#FFFF00')
+        canv.create_line(0, (y0_g - Ymin + 0.5) * scale, window_x, (y0_g - Ymin + 0.5) * scale, fill='#006400')
+
+    canv.create_line((x0_i - Xmin + 0.5) * scale, (y0_i - Ymin + 0.5) * scale, (x0_g - Xmin + 0.5) * scale, (y0_g - Ymin + 0.5)  * scale, fill='#FF0000')
 
     offset = 2
 
-    canv.create_oval(x0_i * scale - offset, y0_i * scale - offset, x0_i * scale + offset, y0_i * scale + offset, fill="#00FF7F")
-    canv.create_oval(x0_g * scale - offset, y0_g * scale - offset, x0_g * scale + offset, y0_g * scale + offset, fill="#00FF7F")
+    canv.create_oval((x0_i - Xmin + 0.5) * scale - offset, (y0_i - Ymin + 0.5) * scale - offset, (x0_i - Xmin + 0.5) * scale + offset, (y0_i - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+    canv.create_oval((x0_g - Xmin + 0.5) * scale - offset, (y0_g - Ymin + 0.5) * scale - offset, (x0_g - Xmin + 0.5) * scale + offset, (y0_g - Ymin + 0.5) * scale + offset, fill="#00FF7F")
 
 
 
