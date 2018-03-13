@@ -86,8 +86,8 @@ def click_btn_red():
 
 def click_btn_run():
 
-    mas_okr_1 = get_mas_okr(mas_1)
-    mas_okr_2 = get_mas_okr(mas_2)
+    mas_okr_1 = get_mas_okr(mas_1, 1)
+    mas_okr_2 = get_mas_okr(mas_2, 2)
 
     mas_okr = mas_okr_1 + mas_okr_2
 
@@ -103,7 +103,7 @@ def click_btn_run():
     mas_points_centr = get_mas_points_centr(mas_okr)
 
     for i in mas_points_centr:
-        print(i)
+        print(i[2])
     print("------")
 
     mas_angle = get_mas_angle(mas_points_centr)
@@ -242,17 +242,36 @@ def click_btn_run():
 def get_mas_angle(mas):
 
     mas_angle = []
+    print("kek")
+    for z in range(len(mas)-1):
+        for j in range(z+1,len(mas)):
 
-    for i in range(len(mas)-1):
-        for g in range(i+1,len(mas)):
+            x1 = mas[z][0][0]
+            y1 = mas[z][0][1]
 
-            x1 = mas[i][0][0]
-            y1 = mas[i][0][1]
+            x2 = mas[j][0][0]
+            y2 = mas[j][0][1]
 
-            x2 = mas[g][0][0]
-            y2 = mas[g][0][1]
+            number_1 = mas[z][2][0]
+            i_1 = mas[z][2][1]
+            g_1 = mas[z][2][2]
+            k_1 = mas[z][2][3]
 
+            number_2 = mas[j][2][0]
+            i_2 = mas[j][2][1]
+            g_2 = mas[j][2][2]
+            k_2 = mas[j][2][3]
+
+
+
+
+            if number_1 == number_2:
+                if list({i_1, g_1, k_1} & {i_2, g_2, k_2}) != []:
+                    continue
             # A*X+B*Y+C=0
+
+            if number_1 == number_2:
+                print("norm", mas[z][2], mas[j][2])
 
             A1 = y1-y2
             B1 = x2-x1
@@ -267,7 +286,7 @@ def get_mas_angle(mas):
             except:
                 angle = 0
 
-            mas_angle.append([i,g,angle])
+            mas_angle.append([z,j,angle])
 
     return mas_angle
 
@@ -275,15 +294,22 @@ def get_mas_points_centr(mas):
 
     mas_points_centr = []
 
-    for i in range(len(mas)):
-        x1 = mas[i][0]
-        y1 = mas[i][1]
+    for z in range(len(mas)):
+        x1 = mas[z][0][0]
+        y1 = mas[z][0][1]
 
-        x2 = mas[i][2]
-        y2 = mas[i][3]
+        x2 = mas[z][1][0]
+        y2 = mas[z][1][1]
 
-        x3 = mas[i][4]
-        y3 = mas[i][5]
+        x3 = mas[z][2][0]
+        y3 = mas[z][2][1]
+
+        number = mas[z][3][0]
+        i = mas[z][3][1]
+        g = mas[z][3][2]
+        k = mas[z][3][3]
+
+
 
         # A*Xo+B*Yo=C
         # D*Xo+E*Yo=F
@@ -304,7 +330,7 @@ def get_mas_points_centr(mas):
 
         rad = distance_between_points([x0,y0],[x1,y1])
 
-        mas_points_centr.append([[x0,y0], rad])
+        mas_points_centr.append([[x0,y0], rad, [number, i, g, k]])
 
     return mas_points_centr
 
@@ -317,7 +343,7 @@ def distance_between_points(xy1, xy2):
     return dis
 
 
-def get_mas_okr(mas):
+def get_mas_okr(mas,number):
 
     mas_okr = []
 
@@ -334,7 +360,7 @@ def get_mas_okr(mas):
                 y3 = mas[k][1]
 
                 if (y2-y1) * (x3-x1) != (y3-y1) * (x2-x1):
-                    mas_okr.append([x1,y1,x2,y2,x3,y3])
+                    mas_okr.append([[x1,y1],[x2,y2],[x3,y3],[number,i,g,k]])
 
     return mas_okr
 
