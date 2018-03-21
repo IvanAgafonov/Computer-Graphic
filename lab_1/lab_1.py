@@ -115,6 +115,7 @@ def click_btn_run():
     min_angle_i = mas_angle[0][0]
     min_angle_g = mas_angle[0][1]
     min_angle = mas_angle[0][2]
+    kek = 0
 
     for k in range(len(mas_angle)):
 
@@ -125,6 +126,7 @@ def click_btn_run():
         if angle < min_angle:
             min_angle_i = i
             min_angle_g = g
+            kek = k
             min_angle = angle
 
 
@@ -146,8 +148,8 @@ def click_btn_run():
 
 
     # Расчет коэфа масштабирования
-    KXmax = window_x - 4
-    KYmax = window_y - 4
+    KXmax = window_x - 60
+    KYmax = window_y - 60
 
     KXmin = 0
     KYmin = 0
@@ -195,6 +197,9 @@ def click_btn_run():
 
     canv.delete('all')
 
+    Ymin -= 30/scale
+    Xmin -= 30/scale
+
     if r_i > r_g:
         canv.create_oval((x0_i - r_i - Xmin + 0.5) * scale, ((y0_i + r_i - Ymin + 0.5) * scale),
                          (x0_i + r_i - Xmin + 0.5) * scale, ((y0_i - r_i - Ymin + 0.5) * scale),
@@ -211,19 +216,69 @@ def click_btn_run():
                          (x0_i + r_i - Xmin + 0.5) * scale, ((y0_i - r_i - Ymin + 0.5) * scale),
                          fill='#FFF0F5')
 
+    # Линии координат
+    canv.create_line(5, window_y-5, 5, 5, fill='#FF0000',arrow=LAST)
+    canv.create_line(5, window_y-5, window_x-5, window_y-5, fill='#FF0000',arrow=LAST)
+
+    canv.create_text(window_x-5, window_y-15, fill="red", font='Times 12', text="X")
+    canv.create_text(15, 10, fill="red", font='Times 12', text="Y")
 
 
+    # Линия горизонта
     if y0_i >= y0_g:
         canv.create_line(0, (y0_i - Ymin + 0.5) * scale, window_x, (y0_i - Ymin + 0.5) * scale, fill='#006400')
     else:
         canv.create_line(0, (y0_g - Ymin + 0.5) * scale, window_x, (y0_g - Ymin + 0.5) * scale, fill='#006400')
 
+    # Линия соединения центров
     canv.create_line((x0_i - Xmin + 0.5) * scale, (y0_i - Ymin + 0.5) * scale, (x0_g - Xmin + 0.5) * scale, (y0_g - Ymin + 0.5)  * scale, fill='#FF0000')
 
     offset = 2
 
+    # Точки центра и их координаты
     canv.create_oval((x0_i - Xmin + 0.5) * scale - offset, (y0_i - Ymin + 0.5) * scale - offset, (x0_i - Xmin + 0.5) * scale + offset, (y0_i - Ymin + 0.5) * scale + offset, fill="#00FF7F")
     canv.create_oval((x0_g - Xmin + 0.5) * scale - offset, (y0_g - Ymin + 0.5) * scale - offset, (x0_g - Xmin + 0.5) * scale + offset, (y0_g - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+
+    canv.create_text((x0_i - Xmin + 0.5) * scale, (y0_i - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(x0_i)) + "," + str(int(y0_i)))
+    canv.create_text((x0_g - Xmin + 0.5) * scale, (y0_g - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(x0_g)) + "," + str(int(y0_g)))
+
+    print("lk",mas_angle[min_angle_i],mas_angle[min_angle_i])
+
+    # Изначальные точки
+    if mas_angle[kek][3][0][0] == 1:
+        index_i_1 = mas_1[mas_angle[kek][3][0][1]]
+        index_g_1 = mas_1[mas_angle[kek][3][0][2]]
+        index_k_1 = mas_1[mas_angle[kek][3][0][3]]
+    else:
+        index_i_1 = mas_2[mas_angle[kek][3][0][1]]
+        index_g_1 = mas_2[mas_angle[kek][3][0][2]]
+        index_k_1 = mas_2[mas_angle[kek][3][0][3]]
+
+    if mas_angle[kek][3][1][0] == 1:
+        index_i_2 = mas_1[mas_angle[kek][3][1][1]]
+        index_g_2 = mas_1[mas_angle[kek][3][1][2]]
+        index_k_2 = mas_1[mas_angle[kek][3][1][3]]
+    else:
+        index_i_2 = mas_2[mas_angle[kek][3][1][1]]
+        index_g_2 = mas_2[mas_angle[kek][3][1][2]]
+        index_k_2 = mas_2[mas_angle[kek][3][1][3]]
+
+    canv.create_oval((index_i_1[0] - Xmin + 0.5) * scale - offset, (index_i_1[1] - Ymin + 0.5) * scale - offset, (index_i_1[0] - Xmin + 0.5) * scale + offset, (index_i_1[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+    canv.create_oval((index_g_1[0] - Xmin + 0.5) * scale - offset, (index_g_1[1] - Ymin + 0.5) * scale - offset, (index_g_1[0] - Xmin + 0.5) * scale + offset, (index_g_1[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+    canv.create_oval((index_k_1[0] - Xmin + 0.5) * scale - offset, (index_k_1[1] - Ymin + 0.5) * scale - offset, (index_k_1[0] - Xmin + 0.5) * scale + offset, (index_k_1[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+
+    canv.create_text((index_i_1[0] - Xmin + 0.5) * scale, (index_i_1[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_i_1[0])) + "," + str(int(index_i_1[1])))
+    canv.create_text((index_g_1[0] - Xmin + 0.5) * scale, (index_g_1[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_g_1[0])) + "," + str(int(index_g_1[1])))
+    canv.create_text((index_k_1[0] - Xmin + 0.5) * scale, (index_k_1[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_k_1[0])) + "," + str(int(index_k_1[1])))
+
+
+    canv.create_oval((index_i_2[0] - Xmin + 0.5) * scale - offset, (index_i_2[1] - Ymin + 0.5) * scale - offset, (index_i_2[0] - Xmin + 0.5) * scale + offset, (index_i_2[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+    canv.create_oval((index_g_2[0] - Xmin + 0.5) * scale - offset, (index_g_2[1] - Ymin + 0.5) * scale - offset, (index_g_2[0] - Xmin + 0.5) * scale + offset, (index_g_2[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+    canv.create_oval((index_k_2[0] - Xmin + 0.5) * scale - offset, (index_k_2[1] - Ymin + 0.5) * scale - offset, (index_k_2[0] - Xmin + 0.5) * scale + offset, (index_k_2[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+
+    canv.create_text((index_i_2[0] - Xmin + 0.5) * scale, (index_i_2[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_i_2[0])) + "," + str(int(index_i_2[1])))
+    canv.create_text((index_g_2[0] - Xmin + 0.5) * scale, (index_g_2[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_g_2[0])) + "," + str(int(index_g_2[1])))
+    canv.create_text((index_k_2[0] - Xmin + 0.5) * scale, (index_k_2[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_k_2[0])) + "," + str(int(index_k_2[1])))
 
 
 
@@ -270,9 +325,6 @@ def get_mas_angle(mas):
                     continue
             # A*X+B*Y+C=0
 
-            if number_1 == number_2:
-                print("norm", mas[z][2], mas[j][2])
-
             A1 = y1-y2
             B1 = x2-x1
             C1 = (x1-x2)*y1 + (y2-y1)*x1
@@ -286,7 +338,7 @@ def get_mas_angle(mas):
             except:
                 angle = 0
 
-            mas_angle.append([z,j,angle])
+            mas_angle.append([z,j,angle,[[number_1,i_1,g_1,k_1],[number_2,i_2,g_2,k_2]]])
 
     return mas_angle
 
