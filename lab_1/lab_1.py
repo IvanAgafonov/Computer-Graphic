@@ -95,22 +95,22 @@ def click_btn_run():
         messagebox.showerror("Error", "Error Input. At these points, zero or one circle can be constructed.")
         return
 
-    for i in mas_okr:
-        print(i)
+    #for i in mas_okr:
+        #print(i)
 
     print("------")
 
     mas_points_centr = get_mas_points_centr(mas_okr)
 
-    for i in mas_points_centr:
-        print(i[2])
-    print("------")
+    #for i in mas_points_centr:
+        #print(i[2])
+    #print("------")
 
     mas_angle = get_mas_angle(mas_points_centr)
 
-    for i in mas_angle:
-        print(i)
-    print("------")
+    #for i in mas_angle:
+        #print(i)
+    #print("------")
 
     min_angle_i = mas_angle[0][0]
     min_angle_g = mas_angle[0][1]
@@ -130,9 +130,9 @@ def click_btn_run():
             min_angle = angle
 
 
-    print(min_angle)
-    print(min_angle_g)
-    print(min_angle_i)
+    #print(min_angle)
+    #print(min_angle_g)
+    #print(min_angle_i)
 
 
     # Определение точек найденных окружжностей
@@ -201,19 +201,19 @@ def click_btn_run():
     Xmin -= 30/scale
 
     if r_i > r_g:
-        canv.create_oval((x0_i - r_i - Xmin + 0.5) * scale, ((y0_i + r_i - Ymin + 0.5) * scale),
-                         (x0_i + r_i - Xmin + 0.5) * scale, ((y0_i - r_i - Ymin + 0.5) * scale),
+        canv.create_oval((x0_i - r_i - Xmin + 0.5) * scale, (window_y - (y0_i + r_i - Ymin + 0.5) * scale),
+                         (x0_i + r_i - Xmin + 0.5) * scale, (window_y - (y0_i - r_i - Ymin + 0.5) * scale),
                          fill='#FFF0F5')
-        canv.create_oval((x0_g - r_g - Xmin + 0.5) * scale, ((y0_g + r_g - Ymin + 0.5) * scale),
-                         (x0_g + r_g - Xmin + 0.5) * scale, ((y0_g - r_g - Ymin + 0.5) * scale),
+        canv.create_oval((x0_g - r_g - Xmin + 0.5) * scale, (window_y - (y0_g + r_g - Ymin + 0.5) * scale),
+                         (x0_g + r_g - Xmin + 0.5) * scale, (window_y - (y0_g - r_g - Ymin + 0.5) * scale),
                          fill='#E6E6FA')
 
     else:
-        canv.create_oval((x0_g - r_g - Xmin + 0.5) * scale, ((y0_g + r_g - Ymin + 0.5) * scale),
-                         (x0_g + r_g - Xmin + 0.5) * scale, ((y0_g - r_g - Ymin + 0.5) * scale),
+        canv.create_oval((x0_g - r_g - Xmin + 0.5) * scale, (window_y - (y0_g + r_g - Ymin + 0.5) * scale),
+                         (x0_g + r_g - Xmin + 0.5) * scale, (window_y - (y0_g - r_g - Ymin + 0.5) * scale),
                          fill='#E6E6FA')
-        canv.create_oval((x0_i - r_i - Xmin + 0.5) * scale, ((y0_i + r_i - Ymin + 0.5) * scale),
-                         (x0_i + r_i - Xmin + 0.5) * scale, ((y0_i - r_i - Ymin + 0.5) * scale),
+        canv.create_oval((x0_i - r_i - Xmin + 0.5) * scale, (window_y - (y0_i + r_i - Ymin + 0.5) * scale),
+                         (x0_i + r_i - Xmin + 0.5) * scale, (window_y - (y0_i - r_i - Ymin + 0.5) * scale),
                          fill='#FFF0F5')
 
     # Линии координат
@@ -226,21 +226,21 @@ def click_btn_run():
 
     # Линия горизонта
     if y0_i >= y0_g:
-        canv.create_line(0, (y0_i - Ymin + 0.5) * scale, window_x, (y0_i - Ymin + 0.5) * scale, fill='#006400')
+        canv.create_line(0, window_y - (y0_i - Ymin + 0.5) * scale, window_x, window_y - (y0_i - Ymin + 0.5) * scale, fill='#006400')
     else:
-        canv.create_line(0, (y0_g - Ymin + 0.5) * scale, window_x, (y0_g - Ymin + 0.5) * scale, fill='#006400')
+        canv.create_line(0, window_y - (y0_g - Ymin + 0.5) * scale, window_x, window_y -(y0_g - Ymin + 0.5) * scale, fill='#006400')
 
     # Линия соединения центров
-    canv.create_line((x0_i - Xmin + 0.5) * scale, (y0_i - Ymin + 0.5) * scale, (x0_g - Xmin + 0.5) * scale, (y0_g - Ymin + 0.5)  * scale, fill='#FF0000')
+    canv.create_line((x0_i - Xmin + 0.5) * scale, window_y - (y0_i - Ymin + 0.5) * scale, (x0_g - Xmin + 0.5) * scale, window_y - (y0_g - Ymin + 0.5)  * scale, fill='#FF0000')
 
     offset = 2
 
     # Точки центра и их координаты
-    canv.create_oval((x0_i - Xmin + 0.5) * scale - offset, (y0_i - Ymin + 0.5) * scale - offset, (x0_i - Xmin + 0.5) * scale + offset, (y0_i - Ymin + 0.5) * scale + offset, fill="#00FF7F")
-    canv.create_oval((x0_g - Xmin + 0.5) * scale - offset, (y0_g - Ymin + 0.5) * scale - offset, (x0_g - Xmin + 0.5) * scale + offset, (y0_g - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+    canv.create_oval((x0_i - Xmin + 0.5) * scale - offset, window_y - (y0_i - Ymin + 0.5) * scale - offset, (x0_i - Xmin + 0.5) * scale + offset, window_y - (y0_i - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+    canv.create_oval((x0_g - Xmin + 0.5) * scale - offset, window_y - (y0_g - Ymin + 0.5) * scale - offset, (x0_g - Xmin + 0.5) * scale + offset, window_y - (y0_g - Ymin + 0.5) * scale + offset, fill="#00FF7F")
 
-    canv.create_text((x0_i - Xmin + 0.5) * scale, (y0_i - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(x0_i)) + "," + str(int(y0_i)))
-    canv.create_text((x0_g - Xmin + 0.5) * scale, (y0_g - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(x0_g)) + "," + str(int(y0_g)))
+    canv.create_text((x0_i - Xmin + 0.5) * scale, window_y - (y0_i - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(x0_i)) + "," + str(int(y0_i)))
+    canv.create_text((x0_g - Xmin + 0.5) * scale, window_y - (y0_g - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(x0_g)) + "," + str(int(y0_g)))
 
     print("lk",mas_angle[min_angle_i],mas_angle[min_angle_i])
 
@@ -263,22 +263,22 @@ def click_btn_run():
         index_g_2 = mas_2[mas_angle[kek][3][1][2]]
         index_k_2 = mas_2[mas_angle[kek][3][1][3]]
 
-    canv.create_oval((index_i_1[0] - Xmin + 0.5) * scale - offset, (index_i_1[1] - Ymin + 0.5) * scale - offset, (index_i_1[0] - Xmin + 0.5) * scale + offset, (index_i_1[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
-    canv.create_oval((index_g_1[0] - Xmin + 0.5) * scale - offset, (index_g_1[1] - Ymin + 0.5) * scale - offset, (index_g_1[0] - Xmin + 0.5) * scale + offset, (index_g_1[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
-    canv.create_oval((index_k_1[0] - Xmin + 0.5) * scale - offset, (index_k_1[1] - Ymin + 0.5) * scale - offset, (index_k_1[0] - Xmin + 0.5) * scale + offset, (index_k_1[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+    canv.create_oval((index_i_1[0] - Xmin + 0.5) * scale - offset, window_y - (index_i_1[1] - Ymin + 0.5) * scale - offset, (index_i_1[0] - Xmin + 0.5) * scale + offset, window_y - (index_i_1[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+    canv.create_oval((index_g_1[0] - Xmin + 0.5) * scale - offset, window_y - (index_g_1[1] - Ymin + 0.5) * scale - offset, (index_g_1[0] - Xmin + 0.5) * scale + offset, window_y - (index_g_1[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+    canv.create_oval((index_k_1[0] - Xmin + 0.5) * scale - offset, window_y - (index_k_1[1] - Ymin + 0.5) * scale - offset, (index_k_1[0] - Xmin + 0.5) * scale + offset, window_y -(index_k_1[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
 
-    canv.create_text((index_i_1[0] - Xmin + 0.5) * scale, (index_i_1[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_i_1[0])) + "," + str(int(index_i_1[1])))
-    canv.create_text((index_g_1[0] - Xmin + 0.5) * scale, (index_g_1[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_g_1[0])) + "," + str(int(index_g_1[1])))
-    canv.create_text((index_k_1[0] - Xmin + 0.5) * scale, (index_k_1[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_k_1[0])) + "," + str(int(index_k_1[1])))
+    canv.create_text((index_i_1[0] - Xmin + 0.5) * scale, window_y - (index_i_1[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_i_1[0])) + "," + str(int(index_i_1[1])))
+    canv.create_text((index_g_1[0] - Xmin + 0.5) * scale, window_y - (index_g_1[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_g_1[0])) + "," + str(int(index_g_1[1])))
+    canv.create_text((index_k_1[0] - Xmin + 0.5) * scale, window_y - (index_k_1[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_k_1[0])) + "," + str(int(index_k_1[1])))
 
 
-    canv.create_oval((index_i_2[0] - Xmin + 0.5) * scale - offset, (index_i_2[1] - Ymin + 0.5) * scale - offset, (index_i_2[0] - Xmin + 0.5) * scale + offset, (index_i_2[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
-    canv.create_oval((index_g_2[0] - Xmin + 0.5) * scale - offset, (index_g_2[1] - Ymin + 0.5) * scale - offset, (index_g_2[0] - Xmin + 0.5) * scale + offset, (index_g_2[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
-    canv.create_oval((index_k_2[0] - Xmin + 0.5) * scale - offset, (index_k_2[1] - Ymin + 0.5) * scale - offset, (index_k_2[0] - Xmin + 0.5) * scale + offset, (index_k_2[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+    canv.create_oval((index_i_2[0] - Xmin + 0.5) * scale - offset, window_y - (index_i_2[1] - Ymin + 0.5) * scale - offset, (index_i_2[0] - Xmin + 0.5) * scale + offset, window_y - (index_i_2[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+    canv.create_oval((index_g_2[0] - Xmin + 0.5) * scale - offset, window_y - (index_g_2[1] - Ymin + 0.5) * scale - offset, (index_g_2[0] - Xmin + 0.5) * scale + offset, window_y - (index_g_2[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
+    canv.create_oval((index_k_2[0] - Xmin + 0.5) * scale - offset, window_y - (index_k_2[1] - Ymin + 0.5) * scale - offset, (index_k_2[0] - Xmin + 0.5) * scale + offset, window_y - (index_k_2[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
 
-    canv.create_text((index_i_2[0] - Xmin + 0.5) * scale, (index_i_2[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_i_2[0])) + "," + str(int(index_i_2[1])))
-    canv.create_text((index_g_2[0] - Xmin + 0.5) * scale, (index_g_2[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_g_2[0])) + "," + str(int(index_g_2[1])))
-    canv.create_text((index_k_2[0] - Xmin + 0.5) * scale, (index_k_2[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_k_2[0])) + "," + str(int(index_k_2[1])))
+    canv.create_text((index_i_2[0] - Xmin + 0.5) * scale, window_y - (index_i_2[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_i_2[0])) + "," + str(int(index_i_2[1])))
+    canv.create_text((index_g_2[0] - Xmin + 0.5) * scale, window_y - (index_g_2[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_g_2[0])) + "," + str(int(index_g_2[1])))
+    canv.create_text((index_k_2[0] - Xmin + 0.5) * scale, window_y - (index_k_2[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_k_2[0])) + "," + str(int(index_k_2[1])))
 
 
 
@@ -336,7 +336,10 @@ def get_mas_angle(mas):
             try:
                 angle = math.fabs(math.atan((A1*B2 - A2*B1)/(A1*A2 - B1*B2)))
             except:
-                angle = 0
+                if y1 == y2:
+                    angle = 0
+                else:
+                    angle = 90
 
             mas_angle.append([z,j,angle,[[number_1,i_1,g_1,k_1],[number_2,i_2,g_2,k_2]]])
 
@@ -441,8 +444,8 @@ def click_btn_add_from_file():
 
 
 # Массивы точек
-mas_1 = [[100,100], [28,100], [50,20]]
-mas_2 = [[120,55], [160,84], [190,41]]
+mas_1 = []
+mas_2 = []
 
 # Основная сцена
 root=Tk()
