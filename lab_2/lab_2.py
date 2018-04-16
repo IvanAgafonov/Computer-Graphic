@@ -1,38 +1,80 @@
 from tkinter import *
 from tkinter import messagebox
 import numpy as np
+import copy
+import math
 
 def paint():
+    global mas, val, window_x, window_y
     # Очистка холста
     canv.delete('all')
 
+    # Инверсия по Y
+    mas_1 = copy.deepcopy(mas)
+    print("--")
+    for i in mas_1:
+
+        i[1] = window_y - i[1]
+
+    print(mas_1)
+    print(mas)
+
     # Основа дома
-    canv.create_polygon(mas[0],mas[1],mas[2],mas[3], outline="#FFFFFF")
-    canv.create_polygon(mas[3],mas[4],mas[2], outline="#FFFFFF")
+    canv.create_polygon(mas_1[0],mas_1[1],mas_1[2],mas_1[3], outline="#FFFFFF")
+    canv.create_polygon(mas_1[3],mas_1[4],mas_1[2], outline="#FFFFFF")
 
     #Окна
-    canv.create_polygon(mas[5],mas[6],mas[7],mas[8], outline="#FFFFFF")
-    canv.create_polygon(mas[9],mas[10],mas[11],mas[12], outline="#FFFFFF")
+    canv.create_polygon(mas_1[5],mas_1[6],mas_1[7],mas_1[8], outline="#FFFFFF")
+    canv.create_polygon(mas_1[9],mas_1[10],mas_1[11],mas_1[12], outline="#FFFFFF")
 
     # Ромб в окне
-    canv.create_polygon(mas[13],mas[14],mas[15],mas[16], outline="#FFFFFF")
+    canv.create_polygon(mas_1[13],mas_1[14],mas_1[15],mas_1[16], outline="#FFFFFF")
 
     # Решетка окна
-    canv.create_line(mas[17],mas[18], fill="#FFFFFF")
-    canv.create_line(mas[19],mas[20], fill="#FFFFFF")
+    canv.create_line(mas_1[17],mas_1[18], fill="#FFFFFF")
+    canv.create_line(mas_1[19],mas_1[20], fill="#FFFFFF")
 
+    print([mas_1[25][0]+math.sqrt((val*2)**2*2)*math.cos(angle),mas_1[25][1]+math.sqrt((val*2)**2*2)*math.sin(angle)])
+    print(math.cos(angle))
     #Круглое окно
-    canv.create_oval(mas[25],mas[26], outline="#FFFFFF")
+    #canv.create_polygon(mas_1[25],mas_1[29],mas_1[26],mas_1[30], outline="#FFFFFF")
+    canv.create_oval(mas_1[29][0] - math.sqrt(rad_x**2*2)*math.cos(angle), mas_1[29][1]  + math.sqrt(rad_y**2*2)*math.sin(angle),
+                     mas_1[29][0] + math.sqrt(rad_x**2*2)*math.cos(angle), mas_1[29][1] - math.sqrt(rad_y**2*2)*math.sin(angle), outline="#FFFFFF")
+
+
 
     #Дуга окна
-    canv.create_arc(mas[27],mas[28], start=0, extent=180, outline="#FFFFFF")
+    #canv.create_arc(mas_1[27],mas_1[28], start=0, extent=180, outline="#FFFFFF")
+    print(math.cos(90*math.pi/180))
+    canv.create_arc(mas_1[30][0] - math.sqrt(rad_x_1**2*2)*math.cos(angle) - val*0.5*math.cos(angle_3*math.pi/180), mas_1[30][1] - val*0.5*math.cos(angle_3*math.pi/180) + math.sqrt(rad_y_1**2*2)*math.sin(angle),
+                     mas_1[30][0] + math.sqrt(rad_x_1**2*2)*math.cos(angle) + val*0.5*math.cos(angle_3*math.pi/180), mas_1[30][1] + val*0.5*math.cos(angle_3*math.pi/180) - math.sqrt(rad_y_1**2*2)*math.sin(angle),start=-angle_2, extent=350, outline="#FFFFFF")
 
-    # Решетка для круглого окна
-    canv.create_line(mas[21],mas[22], fill="#FFFFFF")
-    canv.create_line(mas[23],mas[24], fill="#FFFFFF")
+    print(math.cos(math.pi/2))
+
+    # Решетка для круглого окнаmas_1
+    canv.create_line(mas_1[21],mas_1[22], fill="#FFFFFF")
+    canv.create_line(mas_1[23],mas_1[24], fill="#FFFFFF")
 
 def click_btn_start():
-    pass
+    global mas, rad_x, rad_y, rad_x_1, rad_y_1
+
+    rad_x = val
+    rad_y = val
+    rad_x_1 = val
+    rad_y_1 = val*0.5
+
+    mas = [[0,0], [8*val,0], [8*val,4*val], [0, 4*val], [4*val, 8*val], [1*val,1*val], [1*val, 3*val], [3*val, 3*val],
+           [3*val, 1*val], [5*val, 1*val], [5*val, 3*val], [7*val, 3*val], [7*val, 1*val], [5*val, 2*val], [6*val, 3*val], [7*val, 2*val],
+           [6*val, 1*val], [1*val, 2*val], [3*val, 2*val], [2*val, 2*val], [2*val, 1*val], [3*val, 6*val], [5*val, 6*val], [4*val, 7*val],
+           [4*val, 5*val], [3*val, 7*val], [5*val, 5*val], [1*val, 3.5*val], [3*val, 2.5*val], [4*val, 6*val], [2*val, 3*val]]
+
+
+    # Центрирование
+    for i in mas:
+        i[0] += window_x/2 - 4*val
+        i[1] += window_y/2 - 4*val
+
+    paint()
 
 def click_btn_move():
     global mas
@@ -41,7 +83,7 @@ def click_btn_move():
     if len(line) != 2:
         print("Error Input. Need 2 argument (dx, dy)")
         messagebox.showerror("Error", "Error Input. Need 2 argument (dx, dy)")
-
+        return 0
 
     for i in mas:
         i += [1]
@@ -52,7 +94,6 @@ def click_btn_move():
     M = np.array([[1,0,0], [0,1,0], [int(line[0]),int(line[1]),1]])
 
     for i in range(len(mas)):
-        print(mas[i])
         mas[i] = np.dot(mas[i],M)
 
 
@@ -62,14 +103,98 @@ def click_btn_move():
     for i in range(len(mas)):
         mas[i] = mas[i][:2]
 
-    print(mas)
+
     paint()
 
 def click_btn_rotate():
-    pass
+    global mas, angle, angle_2, angle_3
+
+    line = message_entr_rotate.get().split(",")
+    if len(line) != 3:
+        print("Error Input. Need 3 argument (x0, y0, angle)")
+        messagebox.showerror("Error", "Error Input. Need 3 argument (x0, y0, angle)")
+        return 0
+
+    x0 = float(line[0])
+    y0 = float(line[1])
+    angle_1 = float(line[2]) * math.pi/180
+    angle_2 += float(line[2])
+    angle_3 += float(line[2])
+    print(angle_2,"angle")
+
+    print("---")
+    print(mas)
+    for i in mas:
+        i += [1]
+        i[0] -= x0
+        i[1] -= y0
+    print(mas)
+
+    print(mas)
+    mas = np.array(mas)
+
+    M = np.array([[math.cos(angle_1), -math.sin(angle_1),0], [math.sin(angle_1),math.cos(angle_1),0], [0,0,1]])
+
+    for i in range(len(mas)):
+        mas[i] = np.dot(mas[i],M)
+
+
+
+
+    mas = list(map(list, mas))
+    for i in range(len(mas)):
+        mas[i] = mas[i][:2]
+        mas[i][0] += x0
+        mas[i][1] += y0
+
+    print(1)
+    paint()
 
 def click_btn_scale():
-    pass
+    global mas, rad_x, rad_y, rad_x_1, rad_y_1
+
+    line = message_entr_scale.get().split(",")
+    if len(line) != 4:
+        print("Error Input. Need 4 argument (x0, y0, kx, ky)")
+        messagebox.showerror("Error", "Error Input. Need 4 argument (x0, y0, kx, ky)")
+        return 0
+
+    x0 = float(line[0])
+    y0 = float(line[1])
+
+    kx = float(line[2])
+    ky = float(line[3])
+
+    print("-")
+    print(mas)
+    for i in mas:
+        i += [1]
+        i[0] -= x0
+        i[1] -= y0
+
+
+    mas = np.array(mas)
+
+    rad_x *= kx
+    rad_y *= ky
+    rad_x_1 *= kx
+    rad_y_1 *= ky
+    M = np.array([[kx,0,0], [0,ky,0], [0,0,1]])
+
+    for i in range(len(mas)):
+        mas[i] = np.dot(mas[i],M)
+
+
+
+
+    mas = list(map(list, mas))
+    for i in range(len(mas)):
+        mas[i] = mas[i][:2]
+        mas[i][0] += x0
+        mas[i][1] += y0
+
+    print(1)
+    paint()
 
 def click_btn_return():
     pass
@@ -87,8 +212,8 @@ pady = 5
 # Кнопки
 btn_start = Button(text="Вывод исходного изображения", bg=btn_bg_color, command=click_btn_start)
 btn_move = Button(text="Перемещение(dx,dy)", bg=btn_bg_color, command=click_btn_move)
-btn_rotate = Button(root, text="Масшатбирование(x,y,dx,dy)", bg=btn_bg_color, command=click_btn_rotate)
-btn_scale = Button(text="Вращение(x,y,angle)", bg=btn_bg_color, command=click_btn_scale)
+btn_scale = Button(root, text="Масшатбирование(x0, y0, kx, ky)", bg=btn_bg_color, command=click_btn_scale)
+btn_rotate = Button(text="Вращение(x,y,angle)", bg=btn_bg_color, command=click_btn_rotate)
 btn_return = Button(text="Возврат на одно действие", bg=btn_bg_color, command=click_btn_return)
 
 # Размещение кнопок
@@ -113,26 +238,32 @@ entr_move.grid(row=1, column=1, padx=padx, pady=pady)
 entr_rotate.grid(row=2, column=1, padx=padx, pady=pady)
 entr_scale.grid(row=3, column=1, padx=padx, pady=pady)
 
+
 # Холст изображения
 window_x = 800
-window_y = 600
+window_y = 700
 
 canv = Canvas(width = window_x, height = window_y, bg = "black", cursor = "pencil")
-canv.place(x = 450, y = 44)
+canv.place(x = 450, y = 34)
 
+angle = 45 * math.pi/180
+angle_2 = 0
+angle_3 = 90
 val = 20
+rad_x = val
+rad_y = val
+rad_x_1 = val
+rad_y_1 = val*0.5
 
 mas = [[0,0], [8*val,0], [8*val,4*val], [0, 4*val], [4*val, 8*val], [1*val,1*val], [1*val, 3*val], [3*val, 3*val],
        [3*val, 1*val], [5*val, 1*val], [5*val, 3*val], [7*val, 3*val], [7*val, 1*val], [5*val, 2*val], [6*val, 3*val], [7*val, 2*val],
        [6*val, 1*val], [1*val, 2*val], [3*val, 2*val], [2*val, 2*val], [2*val, 1*val], [3*val, 6*val], [5*val, 6*val], [4*val, 7*val],
-       [4*val, 5*val], [3*val, 7*val], [5*val, 5*val], [1*val, 3.5*val], [3*val, 2.5*val]]
+       [4*val, 5*val], [3*val, 7*val], [5*val, 5*val], [1*val, 3.5*val], [3*val, 2.5*val], [4*val, 6*val], [2*val, 3*val]]
 
-# Инверсия по Y и центрирование
+# Центрирование
 for i in mas:
     i[0] += window_x/2 - 4*val
     i[1] += window_y/2 - 4*val
-
-    i[1] = window_y - i[1]
 
 paint()
 
