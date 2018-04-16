@@ -1,10 +1,69 @@
 from tkinter import *
+from tkinter import messagebox
+import numpy as np
+
+def paint():
+    # Очистка холста
+    canv.delete('all')
+
+    # Основа дома
+    canv.create_polygon(mas[0],mas[1],mas[2],mas[3], outline="#FFFFFF")
+    canv.create_polygon(mas[3],mas[4],mas[2], outline="#FFFFFF")
+
+    #Окна
+    canv.create_polygon(mas[5],mas[6],mas[7],mas[8], outline="#FFFFFF")
+    canv.create_polygon(mas[9],mas[10],mas[11],mas[12], outline="#FFFFFF")
+
+    # Ромб в окне
+    canv.create_polygon(mas[13],mas[14],mas[15],mas[16], outline="#FFFFFF")
+
+    # Решетка окна
+    canv.create_line(mas[17],mas[18], fill="#FFFFFF")
+    canv.create_line(mas[19],mas[20], fill="#FFFFFF")
+
+    #Круглое окно
+    canv.create_oval(mas[25],mas[26], outline="#FFFFFF")
+
+    #Дуга окна
+    canv.create_arc(mas[27],mas[28], start=0, extent=180, outline="#FFFFFF")
+
+    # Решетка для круглого окна
+    canv.create_line(mas[21],mas[22], fill="#FFFFFF")
+    canv.create_line(mas[23],mas[24], fill="#FFFFFF")
 
 def click_btn_start():
     pass
 
 def click_btn_move():
-    pass
+    global mas
+
+    line = message_entr_move.get().split(",")
+    if len(line) != 2:
+        print("Error Input. Need 2 argument (dx, dy)")
+        messagebox.showerror("Error", "Error Input. Need 2 argument (dx, dy)")
+
+
+    for i in mas:
+        i += [1]
+
+    print(mas)
+    mas = np.array(mas)
+
+    M = np.array([[1,0,0], [0,1,0], [int(line[0]),int(line[1]),1]])
+
+    for i in range(len(mas)):
+        print(mas[i])
+        mas[i] = np.dot(mas[i],M)
+
+
+
+
+    mas = list(map(list, mas))
+    for i in range(len(mas)):
+        mas[i] = mas[i][:2]
+
+    print(mas)
+    paint()
 
 def click_btn_rotate():
     pass
@@ -60,5 +119,24 @@ window_y = 600
 
 canv = Canvas(width = window_x, height = window_y, bg = "black", cursor = "pencil")
 canv.place(x = 450, y = 44)
+
+val = 20
+
+mas = [[0,0], [8*val,0], [8*val,4*val], [0, 4*val], [4*val, 8*val], [1*val,1*val], [1*val, 3*val], [3*val, 3*val],
+       [3*val, 1*val], [5*val, 1*val], [5*val, 3*val], [7*val, 3*val], [7*val, 1*val], [5*val, 2*val], [6*val, 3*val], [7*val, 2*val],
+       [6*val, 1*val], [1*val, 2*val], [3*val, 2*val], [2*val, 2*val], [2*val, 1*val], [3*val, 6*val], [5*val, 6*val], [4*val, 7*val],
+       [4*val, 5*val], [3*val, 7*val], [5*val, 5*val], [1*val, 3.5*val], [3*val, 2.5*val]]
+
+# Инверсия по Y и центрирование
+for i in mas:
+    i[0] += window_x/2 - 4*val
+    i[1] += window_y/2 - 4*val
+
+    i[1] = window_y - i[1]
+
+paint()
+
+
+
 
 root.mainloop()
