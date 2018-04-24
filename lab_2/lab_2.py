@@ -38,15 +38,15 @@ def paint():
     print(math.cos(angle))
     #Круглое окно
     #canv.create_polygon(mas_1[25],mas_1[29],mas_1[26],mas_1[30], outline="#FFFFFF")
-    canv.create_oval(mas_1[29][0] - math.sqrt(rad_x**2*2)*math.cos(angle), mas_1[29][1]  + math.sqrt(rad_y**2*2)*math.sin(angle),
-                     mas_1[29][0] + math.sqrt(rad_x**2*2)*math.cos(angle), mas_1[29][1] - math.sqrt(rad_y**2*2)*math.sin(angle), outline="#FFFFFF")
-    canv.create_line(mas_1[29][0] - math.sqrt(rad_x**2*2)*math.cos(angle), mas_1[29][1]  + math.sqrt(rad_y**2*2)*math.sin(angle),
-                     mas_1[29][0] + math.sqrt(rad_x**2*2)*math.cos(angle), mas_1[29][1] - math.sqrt(rad_y**2*2)*math.sin(angle), fill="#FFFFFF")
+    #canv.create_oval(mas_1[29][0] - math.sqrt(rad_x**2*2)*math.cos(angle), mas_1[29][1]  + math.sqrt(rad_y**2*2)*math.sin(angle),
+    #                 mas_1[29][0] + math.sqrt(rad_x**2*2)*math.cos(angle), mas_1[29][1] - math.sqrt(rad_y**2*2)*math.sin(angle), outline="#FFFFFF")
+    #canv.create_line(mas_1[29][0], mas_1[29][1],
+    #                 mas_1[29][0] + math.sqrt(rad_x**2*2)*math.cos(angle), mas_1[29][1] - math.sqrt(rad_y**2*2)*math.sin(angle), fill="#FFFFFF")
 
-    for t in np.arange(0, 2 * math.pi, 0.001):
-        x = mas_1[30][0] + 20 * math.cos(t)
-        y = mas_1[30][1] + 10 * math.sin(t)
-        canv.create_line(x, y, x + 0.1, y + 0.1, fill="#FFFFFF", width=1)
+    for t in mas_1[31:391]:
+        canv.create_line(t[0], t[1], t[0] + 0.5, t[1] + 0.5, fill="#FFFFFF", width=1)
+
+
 
 
     #Дуга окна
@@ -61,8 +61,12 @@ def paint():
     # canv.create_line(mas_1[31][0] - val + math.sqrt((val/2)**2-(0.25*val)**2), mas_1[31][1] - val*0.5, mas_1[29], fill="#FFFFFF")
     # canv.create_line(mas_1[32][0] + val - math.sqrt((val/2)**2-(0.25*val)**2), mas_1[31][1] + val*0.5, mas_1[29], fill="#FFFFFF")
 
-    canv.create_line(mas_1[30][0] - math.sqrt(rad_x_1**2 + rad_y_1**2)*math.cos(angle_2 + ((angle_3 * math.pi/540) % 30)), mas_1[30][1] - math.sqrt(rad_x_1**2 + rad_y_1**2)*math.sin(angle_2 + ((angle_3 * math.pi/540) % 30)),
-                     mas_1[30][0] + math.sqrt(rad_x_1**2 + rad_y_1**2)*math.cos(angle_2 + ((angle_3 * math.pi/540) % 30)), mas_1[30][1] + math.sqrt(rad_x_1**2 + rad_y_1**2)*math.sin(angle_2 + ((angle_3 * math.pi/540) % 30)),fill="#FFFFFF")
+    #canv.create_line(mas_1[30][0] - math.sqrt(rad_x_1**2 + rad_y_1**2)*math.cos(angle_2 + ((angle_3 * math.pi/540) % 30)), mas_1[30][1] - math.sqrt(rad_x_1**2 + rad_y_1**2)*math.sin(angle_2 + ((angle_3 * math.pi/540) % 30)),
+    #                 mas_1[30][0] + math.sqrt(rad_x_1**2 + rad_y_1**2)*math.cos(angle_2 + ((angle_3 * math.pi/540) % 30)), mas_1[30][1] + math.sqrt(rad_x_1**2 + rad_y_1**2)*math.sin(angle_2 + ((angle_3 * math.pi/540) % 30)),fill="#FFFFFF")
+
+    for t in mas_1[391:751]:
+        canv.create_line(t[0], t[1], t[0] + 0.5, t[1] + 0.5, fill="#FFFFFF", width=1)
+
 
 
     #print(angle_3/3)
@@ -75,7 +79,7 @@ def paint():
 
 
 def click_btn_start():
-    global mas, rad_x, rad_y, rad_x_1, rad_y_1, angle, angle_2, angle_3, val, mas_2
+    global mas, rad_x, rad_y, rad_x_1, rad_y_1, angle, angle_2, angle_3, val, mas_2, mas_oval, mas_okr
 
     angle   = 45 * math.pi/180
     angle_2 = math.asin(1/math.sqrt(5))
@@ -86,10 +90,28 @@ def click_btn_start():
     rad_x_1 = val
     rad_y_1 = val*0.5
 
+
+
     mas = [[0,0], [8*val,0], [8*val,4*val], [0, 4*val], [4*val, 8*val], [1*val,1*val], [1*val, 3*val], [3*val, 3*val],
            [3*val, 1*val], [5*val, 1*val], [5*val, 3*val], [7*val, 3*val], [7*val, 1*val], [5*val, 2*val], [6*val, 3*val], [7*val, 2*val],
            [6*val, 1*val], [1*val, 2*val], [3*val, 2*val], [2*val, 2*val], [2*val, 1*val], [3*val, 6*val], [5*val, 6*val], [4*val, 7*val],
-           [4*val, 5*val], [3*val, 7*val], [5*val, 5*val], [1*val, 3.5*val], [3*val, 2.5*val], [4*val, 6*val], [2*val, 3*val], [1*val,3.5*val], [3*val,2.5*val]]
+           [4*val, 5*val], [3*val, 7*val], [5*val, 5*val], [1*val, 3.5*val], [3*val, 2.5*val], [4*val, 6*val], [2*val, 3*val]]
+
+    # Круг
+    for t in np.arange(0, 2 * math.pi, math.pi/180):
+        x = mas[29][0] +  val * math.cos(t)
+        y = mas[29][1] +  val * math.sin(t)
+        mas.append([x,y])
+        canv.create_line(x, y, x + 0.5, y + 0.5, fill="#FFFFFF", width=1)
+
+    # Дуга
+    for t in np.arange(0,  math.pi, math.pi/180):
+        x = mas[30][0] + 20 * math.cos(t)
+        y = mas[30][1] + 10 * math.sin(t)
+        mas.append([x,y])
+        canv.create_line(x, y, x + 0.5, y + 0.5, fill="#FFFFFF", width=1)
+
+
 
 
     # Центрирование
