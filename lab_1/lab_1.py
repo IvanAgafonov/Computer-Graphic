@@ -28,15 +28,15 @@ def click_btn_add():
     else:
         try:
             if int(line[2]) == 1:
-                mas_1.append([int(line[0]),int(line[1])])
+                mas_1.append([float(line[0]),float(line[1])])
             elif int(line[2]) == 2:
-                mas_2.append([int(line[0]),int(line[1])])
+                mas_2.append([float(line[0]),float(line[1])])
             else:
                 messagebox.showerror("Error", "Error Input. number_mas must be 1 or 2")
                 print("Error Input. number_mas must be 1 or 2")
         except:
-            messagebox.showerror("Error", "Error input. x,y must me integer")
-            print("Error input. y must me integer")
+            messagebox.showerror("Error", "Error input. x,y must me float")
+            print("Error input. y must me float")
 
         update_mass()
 
@@ -72,15 +72,15 @@ def click_btn_red():
     else:
         try:
             if int(line[3]) == 1:
-                mas_1[int(line[2])-1] = [int(line[0]),int(line[1])]
+                mas_1[int(line[2])-1] = [float(line[0]),float(line[1])]
             elif int(line[3]) == 2:
-                mas_2[int(line[2])-1] = [int(line[0]),int(line[1])]
+                mas_2[int(line[2])-1] = [float(line[0]),float(line[1])]
             else:
                 messagebox.showerror("Error", "Error Input. number_mas must be 1 or 2")
                 print("Error Input. number_mas must be 1 or 2")
         except:
-            messagebox.showerror("Error", "Error input. x,y must me integer and number_point(N) must me integer and 1<N<len(mas)")
-            print("Error input. x,y must me integer and number_point(N) must me integer and 1<N<len(mas)")
+            messagebox.showerror("Error", "Error input. x,y must be float and number_point(N) must be integer and 1<N<len(mas)")
+            print("Error input. x,y must be float and number_point(N) must be integer and 1<N<len(mas)")
 
         update_mass()
 
@@ -239,8 +239,8 @@ def click_btn_run():
     canv.create_oval((x0_i - Xmin + 0.5) * scale - offset, window_y - (y0_i - Ymin + 0.5) * scale - offset, (x0_i - Xmin + 0.5) * scale + offset, window_y - (y0_i - Ymin + 0.5) * scale + offset, fill="#00FF7F")
     canv.create_oval((x0_g - Xmin + 0.5) * scale - offset, window_y - (y0_g - Ymin + 0.5) * scale - offset, (x0_g - Xmin + 0.5) * scale + offset, window_y - (y0_g - Ymin + 0.5) * scale + offset, fill="#00FF7F")
 
-    canv.create_text((x0_i - Xmin + 0.5) * scale, window_y - (y0_i - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(x0_i)) + "," + str(int(y0_i)))
-    canv.create_text((x0_g - Xmin + 0.5) * scale, window_y - (y0_g - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(x0_g)) + "," + str(int(y0_g)))
+    canv.create_text((x0_i - Xmin + 0.5) * scale, window_y - (y0_i - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str("%.3f" % (float(x0_i))) + "," + str("%.3f" % (float(y0_i))))
+    canv.create_text((x0_g - Xmin + 0.5) * scale, window_y - (y0_g - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str("%.3f" % (float(x0_g))) + "," + str("%.3f" % (float(y0_g))))
 
     print("lk",mas_angle[min_angle_i],mas_angle[min_angle_i])
 
@@ -267,18 +267,18 @@ def click_btn_run():
     canv.create_oval((index_g_1[0] - Xmin + 0.5) * scale - offset, window_y - (index_g_1[1] - Ymin + 0.5) * scale - offset, (index_g_1[0] - Xmin + 0.5) * scale + offset, window_y - (index_g_1[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
     canv.create_oval((index_k_1[0] - Xmin + 0.5) * scale - offset, window_y - (index_k_1[1] - Ymin + 0.5) * scale - offset, (index_k_1[0] - Xmin + 0.5) * scale + offset, window_y -(index_k_1[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
 
-    canv.create_text((index_i_1[0] - Xmin + 0.5) * scale, window_y - (index_i_1[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_i_1[0])) + "," + str(int(index_i_1[1])))
-    canv.create_text((index_g_1[0] - Xmin + 0.5) * scale, window_y - (index_g_1[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_g_1[0])) + "," + str(int(index_g_1[1])))
-    canv.create_text((index_k_1[0] - Xmin + 0.5) * scale, window_y - (index_k_1[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_k_1[0])) + "," + str(int(index_k_1[1])))
+    canv.create_text((index_i_1[0] - Xmin + 0.5) * scale, window_y - (index_i_1[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(float(index_i_1[0])) + "," + str(float(index_i_1[1])))
+    canv.create_text((index_g_1[0] - Xmin + 0.5) * scale, window_y - (index_g_1[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(float(index_g_1[0])) + "," + str(float(index_g_1[1])))
+    canv.create_text((index_k_1[0] - Xmin + 0.5) * scale, window_y - (index_k_1[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(float(index_k_1[0])) + "," + str(float(index_k_1[1])))
 
 
     canv.create_oval((index_i_2[0] - Xmin + 0.5) * scale - offset, window_y - (index_i_2[1] - Ymin + 0.5) * scale - offset, (index_i_2[0] - Xmin + 0.5) * scale + offset, window_y - (index_i_2[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
     canv.create_oval((index_g_2[0] - Xmin + 0.5) * scale - offset, window_y - (index_g_2[1] - Ymin + 0.5) * scale - offset, (index_g_2[0] - Xmin + 0.5) * scale + offset, window_y - (index_g_2[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
     canv.create_oval((index_k_2[0] - Xmin + 0.5) * scale - offset, window_y - (index_k_2[1] - Ymin + 0.5) * scale - offset, (index_k_2[0] - Xmin + 0.5) * scale + offset, window_y - (index_k_2[1] - Ymin + 0.5) * scale + offset, fill="#00FF7F")
 
-    canv.create_text((index_i_2[0] - Xmin + 0.5) * scale, window_y - (index_i_2[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_i_2[0])) + "," + str(int(index_i_2[1])))
-    canv.create_text((index_g_2[0] - Xmin + 0.5) * scale, window_y - (index_g_2[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_g_2[0])) + "," + str(int(index_g_2[1])))
-    canv.create_text((index_k_2[0] - Xmin + 0.5) * scale, window_y - (index_k_2[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(int(index_k_2[0])) + "," + str(int(index_k_2[1])))
+    canv.create_text((index_i_2[0] - Xmin + 0.5) * scale, window_y - (index_i_2[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(float(index_i_2[0])) + "," + str(float(index_i_2[1])))
+    canv.create_text((index_g_2[0] - Xmin + 0.5) * scale, window_y - (index_g_2[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(float(index_g_2[0])) + "," + str(float(index_g_2[1])))
+    canv.create_text((index_k_2[0] - Xmin + 0.5) * scale, window_y - (index_k_2[1] - Ymin + 0.5) * scale + offset*6, fill="red", font='Times 12', text=str(float(index_k_2[0])) + "," + str(float(index_k_2[1])))
 
 
 
